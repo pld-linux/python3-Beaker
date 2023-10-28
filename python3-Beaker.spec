@@ -1,42 +1,37 @@
-# TODO
-# - rename to python-beaker?
 #
 # Conditional build:
-%bcond_with	tests	# unit tests (not included in sdist)
+%bcond_with	tests	# unit tests (TODO: dependencies)
 
 %define		module	Beaker
 Summary:	Session (and caching soon) WSGI Middleware
 Summary(pl.UTF-8):	Middleware WSGI obsługi sesji (i wkrótce pamięci podręcznej)
-Name:		python-%{module}
-# keep 1.11.x here for python2 support
-Version:	1.11.0
+Name:		python3-%{module}
+Version:	1.12.1
 Release:	1
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/beaker/
 Source0:	https://files.pythonhosted.org/packages/source/B/Beaker/%{module}-%{version}.tar.gz
-# Source0-md5:	21e1464acaf5358d90133d1e0cc189b6
+# Source0-md5:	68b406115ea9fef858b8aeba514c9d39
 URL:		https://beaker.readthedocs.io/
-BuildRequires:	python >= 1:2.6
-BuildRequires:	python-setuptools
+BuildRequires:	python3 >= 1:3.7
+BuildRequires:	python3-setuptools
 %if %{with tests}
-BuildRequires:	python-cryptography
-BuildRequires:	python-funcsigs
-BuildRequires:	python-memcached
-BuildRequires:	python-mock
-BuildRequires:	python-modules-sqlite
-BuildRequires:	python-nose
-BuildRequires:	python-pycparser = 2.18
-BuildRequires:	python-pycryptodome
-BuildRequires:	python-pylibmc
-BuildRequires:	python-pymongo
-BuildRequires:	python-redis
-BuildRequires:	python-sqlalchemy
-BuildRequires:	python-webtest < 2.0.24
+BuildRequires:	python3-cryptography
+BuildRequires:	python3-memcached
+BuildRequires:	python3-modules-sqlite
+BuildRequires:	python3-nose
+BuildRequires:	python3-pycparser = 2.18
+BuildRequires:	python3-pycryptodome
+BuildRequires:	python3-pylibmc
+BuildRequires:	python3-pymongo
+BuildRequires:	python3-redis
+BuildRequires:	python3-sqlalchemy
+BuildRequires:	python3-webtest < 2.0.24
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
-Requires:	python-modules >= 1:2.6
+Requires:	python3-modules >= 1:3.7
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -62,14 +57,12 @@ jest jedynie middleware dla sesji, ale wkrótce będzie więcej.
 %setup -qn %{module}-%{version}
 
 %build
-%py_build %{?with_tests:test}
+%py3_build %{?with_tests:test}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%py_install
-
-%py_postclean
+%py3_install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -77,5 +70,5 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README.rst
-%{py_sitescriptdir}/beaker
-%{py_sitescriptdir}/Beaker-%{version}-py*.egg-info
+%{py3_sitescriptdir}/beaker
+%{py3_sitescriptdir}/Beaker-%{version}-py*.egg-info
